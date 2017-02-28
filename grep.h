@@ -34,6 +34,12 @@
 #include <stdio.h>
 #include <zlib.h>
 
+#ifdef __linux__
+#include <bsd/stdio.h>
+#include <limits.h>
+#include <bsd/stdlib.h>
+#endif
+
 #define VER_MAJ 0
 #define VER_MIN 9
 

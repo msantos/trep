@@ -238,8 +238,10 @@ main(int argc, char *argv[])
 	char **expr;
 	const char *errstr;
 
+    /*
 	if (pledge("stdio rpath", NULL) == -1)
 		err(2, "pledge");
+        */
 
 	SLIST_INIT(&patfilelh);
 	switch (__progname[0]) {
@@ -450,8 +452,10 @@ main(int argc, char *argv[])
 		warnx("warning: recursive search of stdin");
 	if (Eflag)
 		cflags |= REG_EXTENDED;
+#ifdef REG_NOSPEC
 	if (Fflag)
 		cflags |= REG_NOSPEC;
+#endif
 #ifdef SMALL
 	/* Sorry, this won't work */
 	if (Fflag && wflag)
