@@ -82,11 +82,16 @@ int	 lbflag;	/* --line-buffered */
 
 int binbehave = BIN_FILE_BIN;
 
+FILE *stream_match;
+FILE *stream_nomatch;
+
 enum {
 	BIN_OPT = CHAR_MAX + 1,
 	HELP_OPT,
 	MMAP_OPT,
-	LINEBUF_OPT
+	LINEBUF_OPT,
+	STREAM_MATCH_OPT,
+	STREAM_NOMATCH_OPT
 };
 
 /* Housekeeping */
@@ -112,6 +117,8 @@ usage(void)
 	    "usage: %s [-abcEFGHhIiLlnoqRsUVvwxZ] [-A num] [-B num] [-C[num]]\n"
 #endif
 	    "\t[-e pattern] [-f file] [--binary-files=value] [--context[=num]]\n"
+		"\t[--stream-with-match=<stdout|stderr|null>]\n"
+		"\t[--stream-without-match=<stdout|stderr|null>]\n"
 	    "\t[--line-buffered] [pattern] [file ...]\n", __progname);
 	exit(2);
 }
@@ -156,6 +163,8 @@ static const struct option long_options[] =
 	{"word-regexp",		no_argument,		NULL, 'w'},
 	{"line-regexp",		no_argument,		NULL, 'x'},
 	{"unix-byte-offsets",	no_argument,		NULL, 'u'},
+	{"stream-with-match",	required_argument,		NULL, STREAM_MATCH_OPT},
+	{"stream-without-match",	required_argument,		NULL, STREAM_NOMATCH_OPT},
 #ifndef NOZ
 	{"decompress",		no_argument,		NULL, 'Z'},
 #endif
@@ -238,10 +247,13 @@ main(int argc, char *argv[])
 	char **expr;
 	const char *errstr;
 
-    /*
+	/*
 	if (pledge("stdio rpath", NULL) == -1)
 		err(2, "pledge");
-        */
+	*/
+
+	stream_match = stdout;
+	stream_nomatch = NULL;
 
 	SLIST_INIT(&patfilelh);
 	switch (__progname[0]) {
@@ -415,6 +427,26 @@ main(int argc, char *argv[])
 			break;
 		case LINEBUF_OPT:
 			lbflag = 1;
+			break;
+		case STREAM_MATCH_OPT:
+			if (strcmp("null", optarg) == 0)
+				stream_match = NULL;
+			else if (strcmp("stdout", optarg) == 0)
+				stream_match = stdout;
+			else if (strcmp("stderr", optarg) == 0)
+				stream_match = stderr;
+			else
+				errx(2, "Unknown stream-with-match option");
+			break;
+		case STREAM_NOMATCH_OPT:
+			if (strcmp("null", optarg) == 0)
+				stream_nomatch = NULL;
+			else if (strcmp("stdout", optarg) == 0)
+				stream_nomatch = stdout;
+			else if (strcmp("stderr", optarg) == 0)
+				stream_nomatch = stderr;
+			else
+				errx(2, "Unknown stream-without-match option");
 			break;
 		case HELP_OPT:
 		default:

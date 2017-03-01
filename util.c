@@ -237,12 +237,15 @@ print:
 			if (Bflag > 0)
 				printqueue();
 			linesqueued = 0;
-			printline(l, ':', oflag ? &pmatch : NULL);
+			printline(stream_match, l, ':', oflag ? &pmatch : NULL);
 		} else {
-			printline(l, '-', oflag ? &pmatch : NULL);
+			printline(stream_match, l, '-', oflag ? &pmatch : NULL);
 			tail--;
 		}
 	}
+    else {
+		printline(stream_nomatch, l, ':', oflag ? &pmatch : NULL);
+    }
 	if (oflag && !matchall) {
 		offset = pmatch.rm_eo;
 		goto redo;
@@ -620,33 +623,36 @@ grep_revstr(unsigned char *str, int len)
 #endif
 
 void
-printline(str_t *line, int sep, regmatch_t *pmatch)
+printline(FILE *stream, str_t *line, int sep, regmatch_t *pmatch)
 {
 	int n;
 
+    if (stream == NULL)
+        return;
+
 	n = 0;
 	if (!hflag) {
-		fputs(line->file, stdout);
+		fputs(line->file, stream);
 		++n;
 	}
 	if (nflag) {
 		if (n)
-			putchar(sep);
-		printf("%lld", line->line_no);
+			fputc(sep, stream);
+		fprintf(stream, "%lld", line->line_no);
 		++n;
 	}
 	if (bflag) {
 		if (n)
-			putchar(sep);
-		printf("%lld", (long long)line->off);
+			fputc(sep, stream);
+		fprintf(stream, "%lld", (long long)line->off);
 		++n;
 	}
 	if (n)
-		putchar(sep);
+		fputc(sep, stream);
 	if (pmatch)
 		fwrite(line->dat + pmatch->rm_so,
-		    pmatch->rm_eo - pmatch->rm_so, 1, stdout);
+		    pmatch->rm_eo - pmatch->rm_so, 1, stream);
 	else
-		fwrite(line->dat, line->len, 1, stdout);
-	putchar('\n');
+		fwrite(line->dat, line->len, 1, stream);
+    fputc('\n', stream);
 }

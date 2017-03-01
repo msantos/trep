@@ -75,6 +75,7 @@ extern int	 Aflag, Bflag, Eflag, Fflag, Hflag, Lflag,
 		 bflag, cflag, hflag, iflag, lflag, nflag, oflag, qflag, sflag,
 		 vflag, wflag, xflag;
 extern int	 binbehave;
+extern FILE *stream_match, *stream_nomatch;
 
 extern int	 first, matchall, patterns, tail, file_err;
 extern char    **pattern;
@@ -92,7 +93,7 @@ void		*grep_malloc(size_t size);
 void		*grep_calloc(size_t nmemb, size_t size);
 void		*grep_realloc(void *ptr, size_t size);
 void		*grep_reallocarray(void *ptr, size_t nmemb, size_t size);
-void		 printline(str_t *line, int sep, regmatch_t *pmatch);
+void		 printline(FILE *stream, str_t *line, int sep, regmatch_t *pmatch);
 int		 fastcomp(fastgrep_t *, const char *);
 void		 fgrepcomp(fastgrep_t *, const unsigned char *);
 

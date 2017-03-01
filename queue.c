@@ -105,7 +105,7 @@ printqueue(void)
 	queue_t *item;
 
 	while ((item = dequeue()) != NULL) {
-		printline(&item->data, '-', NULL);
+		printline(stream_match, &item->data, '-', NULL);
 		free_item(item);
 	}
 }
