@@ -75,7 +75,7 @@ grep_tree(char **argv)
 		case FTS_ERR:
 			file_err = 1;
 			if(!sflag)
-				warnc(p->fts_errno, "%s", p->fts_path);
+				warnx("%s: %s", p->fts_path, strerror(p->fts_errno));
 			break;
 		case FTS_DP:
 			break;
