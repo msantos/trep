@@ -15,3 +15,6 @@ DPADD=	${LIBZ}
 
 all:
 	$(CC) -DNOZ $(CFLAGS) -o $(PROG) $(SRCS) $(LDADD)
+
+clean:
+	-@$(RM) trep
