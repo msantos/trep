@@ -8,13 +8,16 @@ LINKS=	${BINDIR}/grep ${BINDIR}/egrep \
 	${BINDIR}/grep ${BINDIR}/zegrep \
 	${BINDIR}/grep ${BINDIR}/zfgrep \
 
-CFLAGS+= -g -Wall
-
-LDADD=	-lbsd
-DPADD=	${LIBZ}
+UNAME_SYS := $(shell uname -s)
+ifeq ($(UNAME_SYS), Linux)
+	CFLAGS ?= -D_FORTIFY_SOURCE=2 -O2 -fstack-protector \
+			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
+			  -fno-strict-aliasing
+	LDADD=	-lbsd
+endif
 
 all:
-	$(CC) -DNOZ $(CFLAGS) -o $(PROG) $(SRCS) $(LDADD)
+	$(CC) -g -Wall -DNOZ $(CFLAGS) -o $(PROG) $(SRCS) $(LDADD)
 
 clean:
 	-@$(RM) trep
