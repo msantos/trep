@@ -36,8 +36,6 @@
 
 #ifdef __linux__
 #include <bsd/stdio.h>
-#include <limits.h>
-#include <bsd/stdlib.h>
 #endif
 
 #define VER_MAJ 0
@@ -129,3 +127,11 @@ int		 bin_file(FILE * f);
 int		 gzbin_file(gzFile * f);
 int		 mmbin_file(mmf_t *f);
 
+#ifndef HAVE_STRTONUM
+long long strtonum(const char *numstr, long long minval, long long maxval,
+        const char **errstrp);
+#endif
+
+#ifndef HAVE_REALLOCARRAY
+void *reallocarray(void *optr, size_t nmemb, size_t size);
+#endif

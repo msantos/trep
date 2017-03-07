@@ -1,7 +1,8 @@
 #	$OpenBSD: Makefile,v 1.7 2016/03/30 06:38:46 jmc Exp $
 
 PROG=	trep
-SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c
+SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
+		strtonum.c reallocarray.c
 LINKS=	${BINDIR}/grep ${BINDIR}/egrep \
 	${BINDIR}/grep ${BINDIR}/fgrep \
 	${BINDIR}/grep ${BINDIR}/zgrep \
@@ -14,6 +15,8 @@ ifeq ($(UNAME_SYS), Linux)
 			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
 			  -fno-strict-aliasing
 	LDADD=	-lbsd
+else
+	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY
 endif
 
 all:
