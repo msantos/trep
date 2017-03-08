@@ -2,7 +2,7 @@
 
 PROG=	trep
 SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
-		strtonum.c reallocarray.c
+		strtonum.c reallocarray.c fgetln.c
 LINKS=	${BINDIR}/grep ${BINDIR}/egrep \
 	${BINDIR}/grep ${BINDIR}/fgrep \
 	${BINDIR}/grep ${BINDIR}/zgrep \
@@ -14,13 +14,12 @@ ifeq ($(UNAME_SYS), Linux)
 	CFLAGS ?= -D_FORTIFY_SOURCE=2 -O2 -fstack-protector \
 			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
 			  -fno-strict-aliasing
-	LDADD=	-lbsd
 else
-	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY
+	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN
 endif
 
 all:
-	$(CC) -g -Wall -DNOZ $(CFLAGS) -o $(PROG) $(SRCS) $(LDADD)
+	$(CC) -g -Wall -DNOZ $(CFLAGS) -o $(PROG) $(SRCS)
 
 clean:
 	-@$(RM) trep

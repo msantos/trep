@@ -34,10 +34,6 @@
 #include <stdio.h>
 #include <zlib.h>
 
-#ifdef __linux__
-#include <bsd/stdio.h>
-#endif
-
 #define VER_MAJ 0
 #define VER_MIN 9
 
@@ -134,4 +130,8 @@ long long strtonum(const char *numstr, long long minval, long long maxval,
 
 #ifndef HAVE_REALLOCARRAY
 void *reallocarray(void *optr, size_t nmemb, size_t size);
+#endif
+
+#ifndef HAVE_FGETLN
+char *fgetln(FILE *fp, size_t *len);
 #endif
