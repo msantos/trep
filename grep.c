@@ -499,7 +499,7 @@ main(int argc, char *argv[])
 		/* Check if cheating is allowed (always is for fgrep). */
 #ifndef SMALL
 		if (Fflag) {
-			fgrepcomp(&fg_pattern[i], pattern[i]);
+			fgrepcomp(&fg_pattern[i], (unsigned char *)pattern[i]);
 		} else
 #endif
 		{

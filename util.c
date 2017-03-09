@@ -260,7 +260,7 @@ fgrepcomp(fastgrep_t *fg, const unsigned char *pattern)
 	int i;
 
 	/* Initialize. */
-	fg->patternLen = strlen(pattern);
+	fg->patternLen = strlen((char *)pattern);
 	fg->bol = 0;
 	fg->eol = 0;
 	fg->wmatch = wflag;
@@ -497,7 +497,7 @@ grep_search(fastgrep_t *fg, char *data, size_t dataLen, regmatch_t *pmatch,
 			else
 				j = 0;
 			if (!((fg->bol && fg->eol) && (dataLen != fg->patternLen)))
-				if (grep_cmp(fg->pattern, data + j,
+				if (grep_cmp((char *)fg->pattern, data + j,
 				    fg->patternLen)) {
 					pmatch->rm_so = j;
 					pmatch->rm_eo = j + fg->patternLen;
@@ -510,7 +510,7 @@ grep_search(fastgrep_t *fg, char *data, size_t dataLen, regmatch_t *pmatch,
 		/* Quick Search algorithm. */
 		j = dataLen;
 		do {
-			if (grep_cmp(fg->pattern, data + j - fg->patternLen,
+			if (grep_cmp((char *)fg->pattern, data + j - fg->patternLen,
 			    fg->patternLen)) {
 				pmatch->rm_so = j - fg->patternLen;
 				pmatch->rm_eo = j;
@@ -529,7 +529,7 @@ grep_search(fastgrep_t *fg, char *data, size_t dataLen, regmatch_t *pmatch,
 		/* Quick Search algorithm. */
 		j = 0;
 		do {
-			if (grep_cmp(fg->pattern, data + j, fg->patternLen)) {
+			if (grep_cmp((char *)fg->pattern, data + j, fg->patternLen)) {
 				pmatch->rm_so = j;
 				pmatch->rm_eo = j + fg->patternLen;
 				if (fg->patternLen == 0 || !fg->wmatch ||
