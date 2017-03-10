@@ -2,7 +2,8 @@
 
 PROG=	trep
 SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
-		strtonum.c reallocarray.c fgetln.c
+		strtonum.c reallocarray.c fgetln.c \
+		trep_sandbox_null.c
 LINKS=	${BINDIR}/grep ${BINDIR}/egrep \
 	${BINDIR}/grep ${BINDIR}/fgrep \
 	${BINDIR}/grep ${BINDIR}/zgrep \
@@ -17,6 +18,10 @@ ifeq ($(UNAME_SYS), Linux)
 else
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN
 endif
+
+TREP_SANDBOX ?= TREP_SANDBOX_NULL
+
+CFLAGS += -DTREP_SANDBOX=\"$(TREP_SANDBOX)\" -D$(TREP_SANDBOX)
 
 all:
 	$(CC) -g -Wall -DNOZ $(CFLAGS) -o $(PROG) $(SRCS)

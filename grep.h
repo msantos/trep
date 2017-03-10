@@ -123,6 +123,8 @@ int		 bin_file(FILE * f);
 int		 gzbin_file(gzFile * f);
 int		 mmbin_file(mmf_t *f);
 
+int trep_sandbox_init();
+
 #ifndef HAVE_STRTONUM
 long long strtonum(const char *numstr, long long minval, long long maxval,
         const char **errstrp);

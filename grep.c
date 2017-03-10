@@ -119,7 +119,9 @@ usage(void)
 	    "\t[-e pattern] [-f file] [--binary-files=value] [--context[=num]]\n"
 		"\t[--stream-with-match=<stdout|stderr|null>]\n"
 		"\t[--stream-without-match=<stdout|stderr|null>]\n"
-	    "\t[--line-buffered] [pattern] [file ...]\n", __progname);
+	    "\t[--line-buffered] [pattern] [file ...]\n\n"
+        "(sandbox: %s)\n",
+        __progname, TREP_SANDBOX);
 	exit(2);
 }
 
@@ -247,10 +249,8 @@ main(int argc, char *argv[])
 	char **expr;
 	const char *errstr;
 
-	/*
-	if (pledge("stdio rpath", NULL) == -1)
-		err(2, "pledge");
-	*/
+	if (trep_sandbox_init() < 0)
+		err(2, "sandbox_init");
 
 	stream_match = stdout;
 	stream_nomatch = NULL;
