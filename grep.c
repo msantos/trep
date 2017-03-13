@@ -521,8 +521,11 @@ main(int argc, char *argv[])
 	if ((argc == 0 || argc == 1) && !Rflag && !Hflag)
 		hflag = 1;
 
-	if (argc == 0)
+	if (argc == 0) {
+		if (trep_sandbox_stdin() < 0)
+			errx(2, "sandbox_stdin");
 		exit(!procfile(NULL));
+    }
 
 	if (Rflag)
 		c = grep_tree(argv);

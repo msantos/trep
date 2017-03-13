@@ -20,4 +20,10 @@ trep_sandbox_init()
 {
     return pledge("stdio rpath", NULL);
 }
+
+    int
+trep_sandbox_stdin()
+{
+    return pledge("stdio", NULL);
+}
 #endif

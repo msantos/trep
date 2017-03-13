@@ -18,4 +18,10 @@ trep_sandbox_init()
 {
 	return 0;
 }
+
+    int
+trep_sandbox_stdin()
+{
+	return 0;
+}
 #endif
