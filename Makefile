@@ -5,7 +5,8 @@
 PROG=	trep
 SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
 		strtonum.c reallocarray.c fgetln.c \
-		trep_sandbox_null.c trep_sandbox_pledge.c
+		trep_sandbox_null.c trep_sandbox_pledge.c \
+		trep_sandbox_seccomp.c
 LINKS=	${BINDIR}/grep ${BINDIR}/egrep \
 	${BINDIR}/grep ${BINDIR}/fgrep \
 	${BINDIR}/grep ${BINDIR}/zgrep \
@@ -17,6 +18,7 @@ ifeq ($(UNAME_SYS), Linux)
 	CFLAGS ?= -D_FORTIFY_SOURCE=2 -O2 -fstack-protector \
 			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
 			  -fno-strict-aliasing
+	TREP_SANDBOX ?= TREP_SANDBOX_SECCOMP
 else ifeq ($(UNAME_SYS), OpenBSD)
 	TREP_SANDBOX ?= TREP_SANDBOX_PLEDGE
 else
