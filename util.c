@@ -55,6 +55,8 @@ static bool	grep_cmp(const char *, const char *, size_t);
 static void	grep_revstr(unsigned char *, int);
 #endif
 
+int grep_printf(FILE *stream, const char *fmt, ...);
+
 int
 grep_tree(char **argv)
 {
@@ -147,16 +149,16 @@ procfile(char *fn)
 
 	if (cflag) {
 		if (!hflag)
-			printf("%s:", ln.file);
-		printf("%u\n", c);
+			grep_printf(stream_match, "%s:", ln.file);
+		grep_printf(stream_match, "%u\n", c);
 	}
 	if (lflag && c != 0)
-		printf("%s\n", fn);
+		grep_printf(stream_match, "%s\n", fn);
 	if (Lflag && c == 0)
-		printf("%s\n", fn);
+		grep_printf(stream_match, "%s\n", fn);
 	if (c && !cflag && !lflag && !Lflag &&
 	    binbehave == BIN_FILE_BIN && nottext && !qflag)
-		printf("Binary file %s matches\n", fn);
+		grep_printf(stream_match, "Binary file %s matches\n", fn);
 
 	return c;
 }
@@ -231,7 +233,7 @@ print:
 		if (c) {
 			if (first > 0 && tail == 0 && (Bflag < linesqueued) &&
 			    (Aflag || Bflag))
-				printf("--\n");
+				grep_printf(stream_match, "--\n");
 			first = 1;
 			tail = Aflag;
 			if (Bflag > 0)
@@ -655,4 +657,20 @@ printline(FILE *stream, str_t *line, int sep, regmatch_t *pmatch)
 	else
 		fwrite(line->dat, line->len, 1, stream);
     fputc('\n', stream);
+}
+
+int
+grep_printf(FILE *stream, const char *fmt, ...)
+{
+	va_list ap;
+	int r = 0;
+
+	if (stream == NULL)
+		return 0;
+
+	va_start(ap, fmt);
+	r = vfprintf(stream, fmt, ap);
+	va_end(ap);
+
+	return r;
 }
