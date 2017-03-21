@@ -5,8 +5,10 @@
 PROG=	trep
 SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
 		strtonum.c reallocarray.c fgetln.c \
-		trep_sandbox_null.c trep_sandbox_pledge.c \
-		trep_sandbox_seccomp.c
+		trep_sandbox_null.c \
+		trep_sandbox_pledge.c \
+		trep_sandbox_seccomp.c \
+		trep_sandbox_rlimit.c
 LINKS=	${BINDIR}/grep ${BINDIR}/egrep \
 	${BINDIR}/grep ${BINDIR}/fgrep \
 	${BINDIR}/grep ${BINDIR}/zgrep \
@@ -25,7 +27,7 @@ else
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN
 endif
 
-TREP_SANDBOX ?= TREP_SANDBOX_NULL
+TREP_SANDBOX ?= TREP_SANDBOX_RLIMIT
 
 CFLAGS += -DTREP_SANDBOX=\"$(TREP_SANDBOX)\" -D$(TREP_SANDBOX)
 
