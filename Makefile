@@ -8,6 +8,7 @@ SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
 		trep_sandbox_null.c \
 		trep_sandbox_pledge.c \
 		trep_sandbox_seccomp.c \
+		trep_sandbox_capsicum.c \
 		trep_sandbox_rlimit.c
 LINKS=	${BINDIR}/grep ${BINDIR}/egrep \
 	${BINDIR}/grep ${BINDIR}/fgrep \
@@ -23,6 +24,8 @@ ifeq ($(UNAME_SYS), Linux)
 	TREP_SANDBOX ?= TREP_SANDBOX_SECCOMP
 else ifeq ($(UNAME_SYS), OpenBSD)
 	TREP_SANDBOX ?= TREP_SANDBOX_PLEDGE
+else ifeq ($(UNAME_SYS), FreeBSD)
+	TREP_SANDBOX ?= TREP_SANDBOX_CAPSICUM
 else
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN
 endif

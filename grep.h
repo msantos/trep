@@ -32,6 +32,7 @@
 #include <regex.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <zlib.h>
 
 #define VER_MAJ 0
