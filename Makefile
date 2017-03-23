@@ -34,11 +34,13 @@ TREP_SANDBOX ?= TREP_SANDBOX_RLIMIT
 
 CFLAGS += -DTREP_SANDBOX=\"$(TREP_SANDBOX)\" -D$(TREP_SANDBOX)
 
-all:
+all: $(PROG)
+
+$(PROG):
 	$(CC) -g -Wall -DNOZ $(CFLAGS) -o $(PROG) $(SRCS)
 
 clean:
 	-@$(RM) trep
 
-test:
+test: $(PROG)
 	-@PATH=.:$(PATH) bats test
