@@ -28,17 +28,16 @@
 .\"
 .\"	@(#)grep.1	8.3 (Berkeley) 4/18/94
 .\"
-.Dd $Mdocdate: January 13 2015 $
-.Dt GREP 1
+.Dd $Mdocdate: March 08 2017 $
+.Dt TREP 1
 .Os
 .Sh NAME
-.Nm grep , egrep , fgrep ,
-.Nm zgrep , zegrep , zfgrep
-.Nd file pattern searcher
+.Nm trep
+.Nd stream stdin to stdout or stderr using a regular expression
 .Sh SYNOPSIS
-.Nm grep
+.Nm trep
 .Bk -words
-.Op Fl abcEFGHhIiLlnoqRsUVvwxZ
+.Op Fl abcEFGHhIiLlnoqRsUVvwx
 .Op Fl A Ar num
 .Op Fl B Ar num
 .Op Fl C Ns Op Ar num
@@ -47,12 +46,14 @@
 .Op Fl -binary-files Ns = Ns Ar value
 .Op Fl -context Ns Op = Ns Ar num
 .Op Fl -line-buffered
+.Op Fl -stream-with-match Ns = Ns Op Ar stdout | stderr | null
+.Op Fl -stream-without-match Ns = Ns Op Ar stdout | stderr | null
 .Op Ar pattern
 .Op Ar
 .Ek
 .Sh DESCRIPTION
 The
-.Nm grep
+.Nm trep
 utility searches any given input files,
 selecting lines that match one or more patterns.
 By default, a pattern matches an input line if the regular expression
@@ -63,40 +64,25 @@ Each input line that matches at least one of the patterns is written
 to the standard output.
 If no file arguments are specified, the standard input is used.
 .Pp
-.Nm grep
+.Nm trep
 is used for simple patterns and
 basic regular expressions
 .Pq BREs ;
-.Nm egrep
+.Nm etrep
 can handle extended regular expressions
 .Pq EREs .
 See
 .Xr re_format 7
 for more information on regular expressions.
-.Nm fgrep
+.Nm ftrep
 is quicker than both
-.Nm grep
+.Nm trep
 and
-.Nm egrep ,
+.Nm etrep ,
 but can only handle fixed patterns
 (i.e. it does not interpret regular expressions).
 Patterns may consist of one or more lines,
 allowing any of the pattern lines to match a portion of the input.
-.Pp
-.Nm zgrep ,
-.Nm zegrep ,
-and
-.Nm zfgrep
-act like
-.Nm grep ,
-.Nm egrep ,
-and
-.Nm fgrep ,
-respectively, but accept input files compressed with the
-.Xr compress 1
-or
-.Xr gzip 1
-compression utilities.
 .Pp
 The following options are available:
 .Bl -tag -width indent
@@ -149,9 +135,9 @@ Interpret
 .Ar pattern
 as an extended regular expression
 (i.e. force
-.Nm grep
+.Nm trep
 to behave as
-.Nm egrep ) .
+.Nm etrep ) .
 .It Fl e Ar pattern
 Specify a pattern used during the search of the input:
 an input line is selected if it matches any of the specified patterns.
@@ -165,9 +151,9 @@ Interpret
 .Ar pattern
 as a set of fixed strings
 (i.e. force
-.Nm grep
+.Nm trep
 to behave as
-.Nm fgrep ) .
+.Nm ftrep ) .
 .It Fl f Ar file
 Read one or more newline separated patterns from
 .Ar file .
@@ -181,9 +167,9 @@ Interpret
 .Ar pattern
 as a basic regular expression
 (i.e. force
-.Nm grep
+.Nm trep
 to behave as traditional
-.Nm grep ) .
+.Nm trep ) .
 .It Fl H
 Always print filename headers
 .Pq i.e. filenames
@@ -197,7 +183,7 @@ Ignore binary files.
 .It Fl i
 Perform case insensitive matching.
 By default,
-.Nm grep
+.Nm trep
 is case sensitive.
 .It Fl L
 Only the names of files not containing selected lines are written to
@@ -209,7 +195,7 @@ is written.
 .It Fl l
 Only the names of files containing selected lines are written to
 standard output.
-.Nm grep
+.Nm trep
 will only search a file until a match has been found,
 making searches potentially less expensive.
 Pathnames are listed once per file searched.
@@ -233,7 +219,7 @@ Print each match, but only the match, not the entire line.
 .It Fl q
 Quiet mode:
 suppress normal output.
-.Nm grep
+.Nm trep
 will only search a file until a match has been found,
 making searches potentially less expensive.
 .It Fl R
@@ -261,11 +247,6 @@ see
 .It Fl x
 Only input lines selected against an entire fixed string or regular
 expression are considered to be matching lines.
-.It Fl Z
-Force
-.Nm grep
-to behave as
-.Nm zgrep .
 .It Fl Fl binary-files Ns = Ns Ar value
 Controls searching and printing of binary files.
 Options are
@@ -287,10 +268,20 @@ The default is 2.
 Force output to be line buffered.
 By default, output is line buffered when standard output is a terminal
 and block buffered otherwise.
+.Sm off
+.It Fl Fl stream-with-match Ns = Op Ar stdout | stderr | null
+.Sm on
+Send matching lines to a stream. The default stream is
+.Ar stdout.
+.Sm off
+.It Fl Fl stream-without-match Ns = Op Ar stdout | stderr | null
+.Sm on
+Send unmatched lines to a stream. The default stream is
+.Ar null.
 .El
 .Sh EXIT STATUS
 The
-.Nm grep
+.Nm trep
 utility exits with one of the following values:
 .Pp
 .Bl -tag -width Ds -offset indent -compact
@@ -306,16 +297,16 @@ To find all occurrences of the word
 .Sq patricia
 in a file:
 .Pp
-.Dl $ grep 'patricia' myfile
+.Dl $ trep 'patricia' myfile
 .Pp
 To find all occurrences of the pattern
 .Ql .Pp
 at the beginning of a line:
 .Pp
-.Dl $ grep '^\e.Pp' myfile
+.Dl $ trep '^\e.Pp' myfile
 .Pp
 The apostrophes ensure the entire expression is evaluated by
-.Nm grep
+.Nm trep
 instead of by the user's shell.
 The caret
 .Ql ^
@@ -331,11 +322,11 @@ To find all lines in a file which do not contain the words
 or
 .Sq bar :
 .Pp
-.Dl $ grep -v -e 'foo' -e 'bar' myfile
+.Dl $ trep -v -e 'foo' -e 'bar' myfile
 .Pp
 A simple example of an extended regular expression:
 .Pp
-.Dl $ egrep '19|20|25' calendar
+.Dl $ etrep '19|20|25' calendar
 .Pp
 Peruses the file
 .Sq calendar
