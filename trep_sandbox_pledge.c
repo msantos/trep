@@ -13,8 +13,6 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 #ifdef TREP_SANDBOX_PLEDGE
-#include <unistd.h>
-
     int
 trep_sandbox_init()
 {
