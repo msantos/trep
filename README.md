@@ -4,13 +4,15 @@ TREP(1) BSD General Commands Manual TREP(1)
 
 **NAME**
 
-**trep** — stream stdin to stdout or stderr using a regular expression
+**trep** — Selectively stream stdin to stdout/stderr based on regular expressions
 
 **SYNOPSIS**
 
 **trep** \[**−abcEFGHhIiLlnoqRsUVvwx**\] \[**−A ***num*\] \[**−B ***num*\] \[**−C**\[*num*\]\] \[**−e ***pattern*\] \[**−f ***file*\] \[**−-binary-files**=*value*\] \[**−-context**\[=*num*\]\] \[**−-line-buffered**\] \[**−-stream-with-match**=\[*stdout *| *stderr *| *null*\]\] \[**−-stream-without-match**=\[*stdout *| *stderr *| *null*\]\] \[*pattern*\] \[*file ...*\]
 
 **DESCRIPTION**
+
+**trep** (tee-rep) combines tee(1) and grep(1) to select input using a regular expression and output to stdout or stderr based on the match. **trep** is a fork of OpenBSD grep and so supports all the usual grep(1) options.
 
 The **trep** utility searches any given input files, selecting lines that match one or more patterns. By default, a pattern matches an input line if the regular expression (RE) in the pattern matches the input line without its trailing newline. An empty expression matches every line. Each input line that matches at least one of the patterns is written to the standard output. If no file arguments are specified, the standard input is used.
 
@@ -163,6 +165,10 @@ No lines were selected.
 An error occurred.
 
 **EXAMPLES**
+
+To monitor syslog and send all occurrences of the word ’CRITICAL’ to stderr and everything else to stdout:
+
+$ tail -f syslog | trep --stream-with-match=stderr --stream-without-match=stdout ’CRITICAL’
 
 To find all occurrences of the word ’patricia’ in a file:
 
