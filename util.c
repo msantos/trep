@@ -173,7 +173,7 @@ procfile(char *fn)
 static int
 procline(str_t *l, int nottext)
 {
-	regmatch_t	pmatch;
+	regmatch_t	pmatch = {0};
 	int		c, i, r;
 	regoff_t	offset;
 
