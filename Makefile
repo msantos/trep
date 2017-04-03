@@ -1,6 +1,6 @@
 #	$OpenBSD: Makefile,v 1.7 2016/03/30 06:38:46 jmc Exp $
 
-.PHONY: all clean test
+.PHONY: all clean test doc
 
 PROG=	trep
 SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
@@ -39,3 +39,7 @@ clean:
 
 test: $(PROG)
 	@PATH=.:$(PATH) bats test
+
+doc:
+	groff -mandoc -Thtml trep.1 > trep.1.html
+	pandoc -t markdown_github -o README.md trep.1.html
