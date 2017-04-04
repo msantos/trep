@@ -5,11 +5,11 @@
 PROG=	trep
 SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
 		strtonum.c reallocarray.c fgetln.c \
-		trep_sandbox_null.c \
-		trep_sandbox_pledge.c \
-		trep_sandbox_seccomp.c \
-		trep_sandbox_capsicum.c \
-		trep_sandbox_rlimit.c
+		sandbox_null.c \
+		sandbox_pledge.c \
+		sandbox_seccomp.c \
+		sandbox_capsicum.c \
+		sandbox_rlimit.c
 
 UNAME_SYS := $(shell uname -s)
 ifeq ($(UNAME_SYS), Linux)
