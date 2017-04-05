@@ -54,7 +54,7 @@ typedef struct {
 
 typedef struct {
 	unsigned char	*pattern;
-	int		 patternLen;
+	size_t	 patternLen;
 	int		 qsBc[UCHAR_MAX + 1];
 	/* flags */
 	int		 bol;
