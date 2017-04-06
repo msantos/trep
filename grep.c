@@ -47,7 +47,7 @@ int	 cflags;
 int	 eflags = REG_STARTEND;
 
 int	 matchall;	/* shortcut */
-int	 patterns, pattern_sz;
+size_t	 patterns, pattern_sz;
 char   **pattern;
 regex_t	*r_pattern;
 fastgrep_t *fg_pattern;
@@ -243,7 +243,8 @@ read_patterns(const char *fn)
 int
 main(int argc, char *argv[])
 {
-	int c, lastc, prevoptind, newarg, i, needpattern, exprs, expr_sz;
+	int c, lastc, prevoptind, newarg, i, needpattern;
+	size_t exprs, expr_sz;
 	struct patfile *patfile, *pf_next;
 	long l;
 	char **expr;

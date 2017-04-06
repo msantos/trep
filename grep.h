@@ -74,7 +74,8 @@ extern int	 Aflag, Bflag, Eflag, Fflag, Hflag, Lflag,
 extern int	 binbehave;
 extern FILE *stream_match, *stream_nomatch;
 
-extern int	 first, matchall, patterns, tail, file_err;
+extern int	 first, matchall, tail, file_err;
+extern size_t	 patterns;
 extern char    **pattern;
 extern fastgrep_t *fg_pattern;
 extern regex_t	*r_pattern;
