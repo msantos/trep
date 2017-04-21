@@ -19,10 +19,16 @@ ifeq ($(UNAME_SYS), Linux)
 	TREP_SANDBOX ?= TREP_SANDBOX_SECCOMP
 else ifeq ($(UNAME_SYS), OpenBSD)
 	TREP_SANDBOX ?= TREP_SANDBOX_PLEDGE
-	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN
+	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
+	          -D_FORTIFY_SOURCE=2 -O2 -fstack-protector \
+			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
+			  -fno-strict-aliasing
 else ifeq ($(UNAME_SYS), FreeBSD)
 	TREP_SANDBOX ?= TREP_SANDBOX_CAPSICUM
-	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN
+	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
+	          -D_FORTIFY_SOURCE=2 -O2 -fstack-protector \
+			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
+			  -fno-strict-aliasing
 endif
 
 TREP_SANDBOX ?= TREP_SANDBOX_RLIMIT
