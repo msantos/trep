@@ -37,6 +37,10 @@ reallocarray(void *optr, size_t nmemb, size_t size)
 		errno = ENOMEM;
 		return NULL;
 	}
+	if (size == 0 || nmemb == 0) {
+		errno = ENOMEM;
+		return NULL;
+	}
 	return realloc(optr, size * nmemb);
 }
 #endif
