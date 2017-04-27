@@ -33,12 +33,16 @@ endif
 
 TREP_SANDBOX ?= TREP_SANDBOX_RLIMIT
 
-CFLAGS += -DTREP_SANDBOX=\"$(TREP_SANDBOX)\" -D$(TREP_SANDBOX)
+TREP_CFLAGS ?= -g -Wall
+CFLAGS += $(TREP_CFLAGS) \
+		  -DTREP_SANDBOX=\"$(TREP_SANDBOX)\" -D$(TREP_SANDBOX)
+
+LDFLAGS += $(TREP_LDFLAGS)
 
 all: $(PROG)
 
 $(PROG):
-	$(CC) -g -Wall -DNOZ $(CFLAGS) -o $(PROG) $(SRCS)
+	$(CC) -DNOZ $(CFLAGS) -o $(PROG) $(SRCS) $(LDFLAGS)
 
 clean:
 	-@$(RM) trep
