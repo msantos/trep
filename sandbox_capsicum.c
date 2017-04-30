@@ -42,8 +42,8 @@ trep_sandbox_stdin()
 
     int fd = -1;
 
-    cap_rights_init(&policy_read, CAP_READ, CAP_EVENT, CAP_FCNTL);
-    cap_rights_init(&policy_write, CAP_WRITE, CAP_READ);
+    (void)cap_rights_init(&policy_read, CAP_READ, CAP_EVENT, CAP_FCNTL);
+    (void)cap_rights_init(&policy_write, CAP_WRITE, CAP_READ);
 
     if (cap_rights_limit(STDIN_FILENO, &policy_read) < 0)
         return -1;
