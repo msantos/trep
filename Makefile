@@ -16,26 +16,26 @@ ifeq ($(UNAME_SYS), Linux)
 	CFLAGS ?= -D_FORTIFY_SOURCE=2 -O2 -fstack-protector \
 			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
 			  -fno-strict-aliasing
-	TREP_SANDBOX ?= TREP_SANDBOX_SECCOMP
+	TREP_SANDBOX ?= seccomp
 else ifeq ($(UNAME_SYS), OpenBSD)
-	TREP_SANDBOX ?= TREP_SANDBOX_PLEDGE
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
 	          -D_FORTIFY_SOURCE=2 -O2 -fstack-protector \
 			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
 			  -fno-strict-aliasing
+	TREP_SANDBOX ?= pledge
 else ifeq ($(UNAME_SYS), FreeBSD)
-	TREP_SANDBOX ?= TREP_SANDBOX_CAPSICUM
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
 	          -D_FORTIFY_SOURCE=2 -O2 -fstack-protector \
 			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
 			  -fno-strict-aliasing
+	TREP_SANDBOX ?= capsicum
 endif
 
-TREP_SANDBOX ?= TREP_SANDBOX_RLIMIT
+TREP_SANDBOX ?= rlimit
 
 TREP_CFLAGS ?= -g -Wall
 CFLAGS += $(TREP_CFLAGS) \
-		  -DTREP_SANDBOX=\"$(TREP_SANDBOX)\" -D$(TREP_SANDBOX)
+		  -DTREP_SANDBOX=\"$(TREP_SANDBOX)\" -DTREP_SANDBOX_$(TREP_SANDBOX)
 
 LDFLAGS += $(TREP_LDFLAGS)
 
