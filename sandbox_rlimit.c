@@ -21,12 +21,7 @@ trep_sandbox_init()
 {
     struct rlimit rl_zero = {0};
 
-#ifdef RLIMIT_NPROC
-    if (setrlimit(RLIMIT_NPROC, &rl_zero) < 0)
-        return -1;
-#endif
-
-    return 0;
+    return setrlimit(RLIMIT_NPROC, &rl_zero);
 }
 
     int
@@ -34,11 +29,6 @@ trep_sandbox_stdin()
 {
     struct rlimit rl_zero = {0};
 
-#ifdef RLIMIT_NOFILE
-    if (setrlimit(RLIMIT_NOFILE, &rl_zero) < 0)
-        return -1;
-#endif
-
-	return 0;
+    return setrlimit(RLIMIT_NOFILE, &rl_zero);
 }
 #endif
