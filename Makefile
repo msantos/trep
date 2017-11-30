@@ -13,21 +13,17 @@ SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
 
 UNAME_SYS := $(shell uname -s)
 ifeq ($(UNAME_SYS), Linux)
-	CFLAGS ?= -D_FORTIFY_SOURCE=2 -O2 -fstack-protector \
-			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
-			  -fno-strict-aliasing
+	CFLAGS ?= -D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
+						-Wformat -Werror=format-security -fno-strict-aliasing
 	TREP_SANDBOX ?= seccomp
 else ifeq ($(UNAME_SYS), OpenBSD)
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
-	          -D_FORTIFY_SOURCE=2 -O2 -fstack-protector \
-			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
-			  -fno-strict-aliasing
+						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
+						-Wformat -Werror=format-security -fno-strict-aliasing
 	TREP_SANDBOX ?= pledge
 else ifeq ($(UNAME_SYS), FreeBSD)
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
-	          -D_FORTIFY_SOURCE=2 -O2 -fstack-protector \
-			  --param=ssp-buffer-size=4 -Wformat -Werror=format-security \
-			  -fno-strict-aliasing
+						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
 	TREP_SANDBOX ?= capsicum
 endif
 
