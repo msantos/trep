@@ -29,7 +29,7 @@ endif
 
 TREP_SANDBOX ?= rlimit
 
-TREP_CFLAGS ?= -g -Wall
+TREP_CFLAGS ?= -g -Wall -fwrapv
 CFLAGS += $(TREP_CFLAGS) \
 		  -DTREP_SANDBOX=\"$(TREP_SANDBOX)\" -DTREP_SANDBOX_$(TREP_SANDBOX)
 
