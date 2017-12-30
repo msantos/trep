@@ -24,6 +24,7 @@ else ifeq ($(UNAME_SYS), OpenBSD)
 else ifeq ($(UNAME_SYS), FreeBSD)
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
 						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
+						-Wformat -Werror=format-security -fno-strict-aliasing
 	TREP_SANDBOX ?= capsicum
 endif
 
