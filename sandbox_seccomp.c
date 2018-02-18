@@ -363,9 +363,6 @@ trep_sandbox_init()
 #ifdef __NR_fchownat
     SC_ALLOW(fchownat),
 #endif
-#ifdef __NR_fstat
-    SC_ALLOW(fstat),
-#endif
 #ifdef __NR_getfsstat
     SC_ALLOW(getfsstat),
 #endif
