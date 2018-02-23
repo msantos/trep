@@ -1,4 +1,4 @@
-/* Copyright (c) 2017, Michael Santos <michael.santos@gmail.com>
+/* Copyright (c) 2017-2018, Michael Santos <michael.santos@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -366,6 +366,9 @@ trep_sandbox_init()
 #ifdef __NR_getfsstat
     SC_ALLOW(getfsstat),
 #endif
+#ifdef __NR_restart_syscall
+    SC_ALLOW(restart_syscall),
+#endif
 
         /* Default deny */
         BPF_STMT(BPF_RET+BPF_K, SECCOMP_FILTER_FAIL)
@@ -628,6 +631,9 @@ trep_sandbox_stdin()
 #endif
 #ifdef __NR_writev
     SC_ALLOW(writev),
+#endif
+#ifdef __NR_restart_syscall
+    SC_ALLOW(restart_syscall),
 #endif
 
         /* Default deny */
