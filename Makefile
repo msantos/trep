@@ -15,26 +15,36 @@ UNAME_SYS := $(shell uname -s)
 ifeq ($(UNAME_SYS), Linux)
 	CFLAGS ?= -D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
 						-Wformat -Werror=format-security -fno-strict-aliasing
+	LDFLAGS ?= -Wl,-z,relro,-z,now
 	TREP_SANDBOX ?= seccomp
+	TREP_SANDBOX_RLIMIT_NOFILE ?= 0
 else ifeq ($(UNAME_SYS), OpenBSD)
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
 						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
 						-Wformat -Werror=format-security -fno-strict-aliasing
+	LDFLAGS ?= -Wl,-z,relro,-z,now
 	TREP_SANDBOX ?= pledge
 else ifeq ($(UNAME_SYS), FreeBSD)
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
 						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
 						-Wformat -Werror=format-security -fno-strict-aliasing
+	LDFLAGS ?= -Wl,-z,relro,-z,now
 	TREP_SANDBOX ?= capsicum
+else ifeq ($(UNAME_SYS), Darwin)
+	CFLAGS ?= -DHAVE_FGETLN \
+						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
+						-Wformat -Werror=format-security -fno-strict-aliasing
 endif
 
 TREP_SANDBOX ?= rlimit
+TREP_SANDBOX_RLIMIT_NOFILE ?= -1
 
 TREP_CFLAGS ?= -g -Wall -fwrapv
 CFLAGS += $(TREP_CFLAGS) \
-		  -DTREP_SANDBOX=\"$(TREP_SANDBOX)\" -DTREP_SANDBOX_$(TREP_SANDBOX)
+		  -DTREP_SANDBOX=\"$(TREP_SANDBOX)\" -DTREP_SANDBOX_$(TREP_SANDBOX) \
+      -DTREP_SANDBOX_RLIMIT_NOFILE=$(TREP_SANDBOX_RLIMIT_NOFILE)
 
-LDFLAGS += $(TREP_LDFLAGS) -Wl,-z,relro,-z,now
+LDFLAGS += $(TREP_LDFLAGS)
 
 all: $(PROG)
 

@@ -15,6 +15,8 @@
 #ifdef TREP_SANDBOX_rlimit
 #include <sys/time.h>
 #include <sys/resource.h>
+#include <unistd.h>
+#include <fcntl.h>
 
     int
 trep_sandbox_init()
@@ -27,8 +29,29 @@ trep_sandbox_init()
     int
 trep_sandbox_stdin()
 {
-    struct rlimit rl_zero = {0};
+    struct rlimit rl = {0};
 
-    return setrlimit(RLIMIT_NOFILE, &rl_zero);
+    rl.rlim_cur = TREP_SANDBOX_RLIMIT_NOFILE;
+    rl.rlim_max = TREP_SANDBOX_RLIMIT_NOFILE;
+
+    if (rl.rlim_cur == (rlim_t)-1) {
+        int fd;
+
+        if (getrlimit(RLIMIT_NOFILE, &rl) < 0)
+            return -1;
+
+        for (fd = rl.rlim_cur; fd >= STDERR_FILENO; fd--) {
+            if (fcntl(fd, F_GETFD, 0) < 0)
+                continue;
+
+            rl.rlim_cur = rl.rlim_max = fd;
+            goto TREP_DONE;
+        }
+
+        return -1;
+    }
+
+TREP_DONE:
+    return setrlimit(RLIMIT_NOFILE, &rl);
 }
 #endif
