@@ -17,7 +17,6 @@ ifeq ($(UNAME_SYS), Linux)
 						-Wformat -Werror=format-security -fno-strict-aliasing
 	LDFLAGS ?= -Wl,-z,relro,-z,now
 	TREP_SANDBOX ?= seccomp
-	TREP_SANDBOX_RLIMIT_NOFILE ?= 0
 else ifeq ($(UNAME_SYS), OpenBSD)
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
 						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
@@ -34,10 +33,11 @@ else ifeq ($(UNAME_SYS), Darwin)
 	CFLAGS ?= -DHAVE_FGETLN \
 						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
 						-Wformat -Werror=format-security -fno-strict-aliasing
+	TREP_SANDBOX_RLIMIT_NOFILE ?= 4
 endif
 
 TREP_SANDBOX ?= rlimit
-TREP_SANDBOX_RLIMIT_NOFILE ?= -1
+TREP_SANDBOX_RLIMIT_NOFILE ?= 0
 
 TREP_CFLAGS ?= -g -Wall -fwrapv
 CFLAGS += $(TREP_CFLAGS) \
