@@ -629,8 +629,8 @@ printline(FILE *stream, str_t *line, int sep, regmatch_t *pmatch)
 {
 	int n;
 
-    if (stream == NULL)
-        return;
+	if (stream == NULL)
+		return;
 
 	n = 0;
 	if (!hflag) {
