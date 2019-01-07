@@ -39,7 +39,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#ifndef NOZ
 #include <zlib.h>
+#endif
 
 #include "grep.h"
 

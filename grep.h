@@ -35,7 +35,9 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
+#ifndef NOZ
 #include <zlib.h>
+#endif
 
 #define VER_MAJ 0
 #define VER_MIN 9
@@ -124,7 +126,9 @@ void		 grep_close(file_t *f);
 
 /* binary.c */
 int		 bin_file(FILE * f);
+#ifndef NOZ
 int		 gzbin_file(gzFile * f);
+#endif
 int		 mmbin_file(mmf_t *f);
 
 int trep_sandbox_init();

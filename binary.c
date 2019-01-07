@@ -30,7 +30,9 @@
 #include <err.h>
 #include <stdio.h>
 #include <string.h>
+#ifndef NOZ
 #include <zlib.h>
+#endif
 
 #include "grep.h"
 
