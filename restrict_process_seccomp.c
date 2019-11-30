@@ -12,7 +12,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-#ifdef TREP_SANDBOX_seccomp
+#ifdef RESTRICT_PROCESS_seccomp
 #include <stddef.h>
 #include <errno.h>
 #include <sys/syscall.h>
@@ -21,9 +21,9 @@
 #include <sys/prctl.h>
 #include <linux/seccomp.h>
 
-/* macros from openssh-7.2/sandbox-seccomp-filter.c */
+/* macros from openssh-7.2/restrict_process-seccomp-filter.c */
 
-/* Linux seccomp_filter sandbox */
+/* Linux seccomp_filter restrict_process */
 #define SECCOMP_FILTER_FAIL SECCOMP_RET_KILL
 
 /* Use a signal handler to emit violations when debugging */
@@ -72,7 +72,7 @@
 #endif
 
     int
-trep_sandbox_init()
+trep_restrict_process_init()
 {
     struct sock_filter filter[] = {
         /* Ensure the syscall arch convention is as expected. */
@@ -389,7 +389,7 @@ trep_sandbox_init()
 }
 
     int
-trep_sandbox_stdin()
+trep_restrict_process_stdin()
 {
     struct sock_filter filter[] = {
         /* Ensure the syscall arch convention is as expected. */

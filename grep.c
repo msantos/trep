@@ -120,8 +120,8 @@ usage(void)
 		"\t[--stream-with-match=<stdout|stderr|null>]\n"
 		"\t[--stream-without-match=<stdout|stderr|null>]\n"
 	    "\t[--line-buffered] [pattern] [file ...]\n\n"
-        "(sandbox: %s)\n",
-        __progname, TREP_SANDBOX);
+        "(use %s mode process restriction)\n",
+        __progname, RESTRICT_PROCESS);
 	exit(2);
 }
 
@@ -250,8 +250,8 @@ main(int argc, char *argv[])
 	char **expr;
 	const char *errstr;
 
-	if (trep_sandbox_init() < 0)
-		err(2, "sandbox_init");
+	if (trep_restrict_process_init() < 0)
+		err(2, "restrict_process_init");
 
 	stream_match = stdout;
 	stream_nomatch = NULL;
@@ -523,8 +523,8 @@ main(int argc, char *argv[])
 		hflag = 1;
 
 	if (argc == 0) {
-		if (trep_sandbox_stdin() < 0)
-			errx(2, "sandbox_stdin");
+		if (trep_restrict_process_stdin() < 0)
+			errx(2, "restrict_process_stdin");
 		exit(!procfile(NULL));
     }
 

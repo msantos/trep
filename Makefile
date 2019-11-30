@@ -5,11 +5,11 @@
 PROG=	trep
 SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
 		strtonum.c reallocarray.c fgetln.c \
-		sandbox_null.c \
-		sandbox_pledge.c \
-		sandbox_seccomp.c \
-		sandbox_capsicum.c \
-		sandbox_rlimit.c
+		restrict_process_null.c \
+		restrict_process_pledge.c \
+		restrict_process_seccomp.c \
+		restrict_process_capsicum.c \
+		restrict_process_rlimit.c
 
 UNAME_SYS := $(shell uname -s)
 ifeq ($(UNAME_SYS), Linux)
@@ -18,7 +18,7 @@ ifeq ($(UNAME_SYS), Linux)
 						-pie -fPIE \
 					 	-fno-strict-aliasing
 	LDFLAGS ?= -Wl,-z,relro,-z,now -Wl,-z,noexecstack
-	TREP_SANDBOX ?= seccomp
+	RESTRICT_PROCESS ?= seccomp
 else ifeq ($(UNAME_SYS), OpenBSD)
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
 						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
@@ -26,7 +26,7 @@ else ifeq ($(UNAME_SYS), OpenBSD)
 						-pie -fPIE \
 					 	-fno-strict-aliasing
 	LDFLAGS ?= -Wl,-z,relro,-z,now -Wl,-z,noexecstack
-	TREP_SANDBOX ?= pledge
+	RESTRICT_PROCESS ?= pledge
 else ifeq ($(UNAME_SYS), FreeBSD)
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
 						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
@@ -34,23 +34,23 @@ else ifeq ($(UNAME_SYS), FreeBSD)
 						-pie -fPIE \
 					 	-fno-strict-aliasing
 	LDFLAGS ?= -Wl,-z,relro,-z,now -Wl,-z,noexecstack
-	TREP_SANDBOX ?= capsicum
+	RESTRICT_PROCESS ?= capsicum
 else ifeq ($(UNAME_SYS), Darwin)
 	CFLAGS ?= -DHAVE_FGETLN \
 						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
 						-Wformat -Werror=format-security \
 						-pie -fPIE \
 					 	-fno-strict-aliasing
-	TREP_SANDBOX_RLIMIT_NOFILE ?= 4
+	RESTRICT_PROCESS_RLIMIT_NOFILE ?= 4
 endif
 
-TREP_SANDBOX ?= rlimit
-TREP_SANDBOX_RLIMIT_NOFILE ?= 0
+RESTRICT_PROCESS ?= rlimit
+RESTRICT_PROCESS_RLIMIT_NOFILE ?= 0
 
 TREP_CFLAGS ?= -g -Wall -fwrapv
 CFLAGS += $(TREP_CFLAGS) \
-		  -DTREP_SANDBOX=\"$(TREP_SANDBOX)\" -DTREP_SANDBOX_$(TREP_SANDBOX) \
-      -DTREP_SANDBOX_RLIMIT_NOFILE=$(TREP_SANDBOX_RLIMIT_NOFILE)
+		  -DRESTRICT_PROCESS=\"$(RESTRICT_PROCESS)\" -DRESTRICT_PROCESS_$(RESTRICT_PROCESS) \
+      -DRESTRICT_PROCESS_RLIMIT_NOFILE=$(RESTRICT_PROCESS_RLIMIT_NOFILE)
 
 LDFLAGS += $(TREP_LDFLAGS)
 

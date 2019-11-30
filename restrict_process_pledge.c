@@ -12,26 +12,18 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-#ifdef TREP_SANDBOX_rlimit
-#include <sys/time.h>
-#include <sys/resource.h>
+#ifdef RESTRICT_PROCESS_pledge
+#include <unistd.h>
 
     int
-trep_sandbox_init()
+trep_restrict_process_init()
 {
-    struct rlimit rl_zero = {0};
-
-    return setrlimit(RLIMIT_NPROC, &rl_zero);
+    return pledge("stdio rpath", NULL);
 }
 
     int
-trep_sandbox_stdin()
+trep_restrict_process_stdin()
 {
-    struct rlimit rl = {0};
-
-    rl.rlim_cur = TREP_SANDBOX_RLIMIT_NOFILE;
-    rl.rlim_max = TREP_SANDBOX_RLIMIT_NOFILE;
-
-    return setrlimit(RLIMIT_NOFILE, &rl);
+    return pledge("stdio", NULL);
 }
 #endif

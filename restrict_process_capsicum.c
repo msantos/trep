@@ -12,7 +12,7 @@
  * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
-#ifdef TREP_SANDBOX_capsicum
+#ifdef RESTRICT_PROCESS_capsicum
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/param.h>
@@ -23,7 +23,7 @@
 #include <errno.h>
 
     int
-trep_sandbox_init()
+trep_restrict_process_init()
 {
     struct rlimit rl = {0};
 
@@ -31,7 +31,7 @@ trep_sandbox_init()
 }
 
     int
-trep_sandbox_stdin()
+trep_restrict_process_stdin()
 {
     struct rlimit rl = {0};
     cap_rights_t policy_read;
