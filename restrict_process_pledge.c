@@ -1,4 +1,4 @@
-/* Copyright (c) 2017, Michael Santos <michael.santos@gmail.com>
+/* Copyright (c) 2017-2019, Michael Santos <michael.santos@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -16,13 +16,13 @@
 #include <unistd.h>
 
     int
-trep_restrict_process_init()
+restrict_process_init()
 {
     return pledge("stdio rpath", NULL);
 }
 
     int
-trep_restrict_process_stdin()
+restrict_process_stdin()
 {
     return pledge("stdio", NULL);
 }

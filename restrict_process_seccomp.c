@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2018, Michael Santos <michael.santos@gmail.com>
+/* Copyright (c) 2017-2019, Michael Santos <michael.santos@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -72,7 +72,7 @@
 #endif
 
     int
-trep_restrict_process_init()
+restrict_process_init()
 {
     struct sock_filter filter[] = {
         /* Ensure the syscall arch convention is as expected. */
@@ -389,7 +389,7 @@ trep_restrict_process_init()
 }
 
     int
-trep_restrict_process_stdin()
+restrict_process_stdin()
 {
     struct sock_filter filter[] = {
         /* Ensure the syscall arch convention is as expected. */

@@ -250,7 +250,7 @@ main(int argc, char *argv[])
 	char **expr;
 	const char *errstr;
 
-	if (trep_restrict_process_init() < 0)
+	if (restrict_process_init() < 0)
 		err(2, "restrict_process_init");
 
 	stream_match = stdout;
@@ -523,7 +523,7 @@ main(int argc, char *argv[])
 		hflag = 1;
 
 	if (argc == 0) {
-		if (trep_restrict_process_stdin() < 0)
+		if (restrict_process_stdin() < 0)
 			errx(2, "restrict_process_stdin");
 		exit(!procfile(NULL));
     }
