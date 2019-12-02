@@ -370,6 +370,15 @@ restrict_process_init()
     SC_ALLOW(restart_syscall),
 #endif
 
+#ifdef __TERMUX__
+#ifdef __NR_newfstatat
+    SC_ALLOW(newfstatat),
+#endif
+#ifdef __NR_getdents64
+    SC_ALLOW(getdents64),
+#endif
+#endif
+
         /* Default deny */
         BPF_STMT(BPF_RET+BPF_K, SECCOMP_FILTER_FAIL)
     };
@@ -634,6 +643,18 @@ restrict_process_stdin()
 #endif
 #ifdef __NR_restart_syscall
     SC_ALLOW(restart_syscall),
+#endif
+
+#ifdef __TERMUX__
+#ifdef __NR_prctl
+    SC_ALLOW(prctl),
+#endif
+#ifdef __NR_newfstatat
+    SC_ALLOW(newfstatat),
+#endif
+#ifdef __NR_getdents64
+    SC_ALLOW(getdents64),
+#endif
 #endif
 
         /* Default deny */
