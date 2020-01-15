@@ -8,7 +8,7 @@ TREP(1) BSD General Commands Manual TREP(1)
 
 **SYNOPSIS**
 
-**trep** \[**−abcEFGHhIiLlnoqRsUVvwx**\] \[**−A ***num*\] \[**−B ***num*\] \[**−C**\[*num*\]\] \[**−e ***pattern*\] \[**−f ***file*\] \[**−-binary-files**=*value*\] \[**−-context**\[=*num*\]\] \[**−-line-buffered**\] \[**−-stream-with-match**=\[*stdout *| *stderr *| *null*\]\] \[**−-stream-without-match**=\[*stdout *| *stderr *| *null*\]\] \[*pattern*\] \[*file ...*\]
+**trep** \[**−abcEFGHhIiLlnoqRsUVvwx**\] \[**−A ***num*\] \[**−B ***num*\] \[**−C**\[*num*\]\] \[**−e ***pattern*\] \[**−f ***file*\] \[**−-binary-files**=*value*\] \[**−-context**\[=*num*\]\] \[**--label=name**\] \[**−-line-buffered**\] \[**−-stream-with-match**=\[*stdout *| *stderr *| *null*\]\] \[**−-stream-without-match**=\[*stdout *| *stderr *| *null*\]\] \[*pattern*\] \[*file ...*\]
 
 **DESCRIPTION**
 
@@ -135,6 +135,10 @@ Controls searching and printing of binary files. Options are *binary*, the defau
 **−−context**\[=*num*\]
 
 Print *num* lines of leading and trailing context. The default is 2.
+
+**--label**\[=*name*\]
+
+Print name instead of the filename before lines.
 
 **−−line-buffered**
 

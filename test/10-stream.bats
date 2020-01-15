@@ -70,3 +70,9 @@ export -f stdin1
     [ "${lines[0]}" == "test" ]
     [ "${lines[1]}" == "123" ]
 }
+
+@test "stream: prepend label: match=stderr nomatch=stdout" {
+    run bash -c "stdin1 | trep --label=foo -H --stream-with-match=stderr --stream-without-match=stdout test"
+    [ "${lines[0]}" == "foo:test" ]
+    [ "${lines[1]}" == "foo:123" ]
+}

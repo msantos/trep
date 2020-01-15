@@ -121,6 +121,8 @@ procfile(char *fn)
 	}
 
 	ln.file = fn;
+	if (labelname)
+		ln.file = (char *)labelname;
 	ln.line_no = 0;
 	ln.len = 0;
 	linesqueued = 0;

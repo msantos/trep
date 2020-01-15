@@ -74,6 +74,7 @@ extern int	 Aflag, Bflag, Eflag, Fflag, Hflag, Lflag,
 		 bflag, cflag, hflag, iflag, lflag, nflag, oflag, qflag, sflag,
 		 vflag, wflag, xflag;
 extern int	 binbehave;
+extern const char *labelname;
 extern FILE *stream_match, *stream_nomatch;
 
 extern int	 first, matchall, tail, file_err;

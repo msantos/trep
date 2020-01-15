@@ -79,6 +79,7 @@ int	 vflag;		/* -v: only show non-matching lines */
 int	 wflag;		/* -w: pattern must start and end on word boundaries */
 int	 xflag;		/* -x: pattern must match entire line */
 int	 lbflag;	/* --line-buffered */
+const char *labelname; /* --label=name */
 
 int binbehave = BIN_FILE_BIN;
 
@@ -90,6 +91,7 @@ enum {
 	HELP_OPT,
 	MMAP_OPT,
 	LINEBUF_OPT,
+	LABEL_OPT,
 	STREAM_MATCH_OPT,
 	STREAM_NOMATCH_OPT
 };
@@ -136,6 +138,7 @@ static const struct option long_options[] =
 	{"binary-files",	required_argument,	NULL, BIN_OPT},
 	{"help",		no_argument,		NULL, HELP_OPT},
 	{"mmap",		no_argument,		NULL, MMAP_OPT},
+	{"label",		required_argument,	NULL, LABEL_OPT},
 	{"line-buffered",	no_argument,		NULL, LINEBUF_OPT},
 	{"after-context",	required_argument,	NULL, 'A'},
 	{"before-context",	required_argument,	NULL, 'B'},
@@ -429,6 +432,9 @@ main(int argc, char *argv[])
 		case LINEBUF_OPT:
 			lbflag = 1;
 			break;
+		case LABEL_OPT:
+			labelname = optarg;
+			break;
 		case STREAM_MATCH_OPT:
 			if (strcmp("null", optarg) == 0)
 				stream_match = NULL;
@@ -480,6 +486,11 @@ main(int argc, char *argv[])
 		--argc;
 		++argv;
 	}
+	if (argc == 1 && strcmp(*argv, "-") == 0) {
+		/* stdin */
+		--argc;
+		++argv;
+  }
 
 	if (Rflag && argc == 0)
 		warnx("warning: recursive search of stdin");
