@@ -370,13 +370,11 @@ restrict_process_init()
     SC_ALLOW(restart_syscall),
 #endif
 
-#ifdef __TERMUX__
 #ifdef __NR_newfstatat
     SC_ALLOW(newfstatat),
 #endif
 #ifdef __NR_getdents64
     SC_ALLOW(getdents64),
-#endif
 #endif
 
         /* Default deny */
@@ -649,12 +647,12 @@ restrict_process_stdin()
 #ifdef __NR_prctl
     SC_ALLOW(prctl),
 #endif
+#endif
 #ifdef __NR_newfstatat
     SC_ALLOW(newfstatat),
 #endif
 #ifdef __NR_getdents64
     SC_ALLOW(getdents64),
-#endif
 #endif
 
         /* Default deny */
