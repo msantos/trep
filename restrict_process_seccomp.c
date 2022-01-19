@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2019, Michael Santos <michael.santos@gmail.com>
+/* Copyright (c) 2017-2022, Michael Santos <michael.santos@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -409,14 +409,14 @@ restrict_process_stdin()
             offsetof(struct seccomp_data, nr)),
 
         /* Syscalls to non-fatally deny */
-#ifdef __NR_ioctl
-        SC_DENY(ioctl, ENOTTY),
-#endif
-#ifdef __NR__llseek
-        SC_DENY(_llseek, ESPIPE),
-#endif
 
         /* Syscalls to allow */
+#ifdef __NR_ioctl
+        SC_ALLOW(ioctl),
+#endif
+#ifdef __NR__llseek
+        SC_ALLOW(_llseek),
+#endif
 
         /* Used to test if input is file or stdin */
 #ifdef __NR_fcntl

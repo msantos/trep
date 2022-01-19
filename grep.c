@@ -122,7 +122,7 @@ usage(void)
 		"\t[--stream-with-match=<stdout|stderr|null>]\n"
 		"\t[--stream-without-match=<stdout|stderr|null>]\n"
 	    "\t[--line-buffered] [pattern] [file ...]\n\n"
-        "(use %s mode process restriction)\n",
+        "(using %s mode process restriction)\n",
         __progname, RESTRICT_PROCESS);
 	exit(2);
 }

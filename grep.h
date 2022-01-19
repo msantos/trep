@@ -39,6 +39,8 @@
 #include <zlib.h>
 #endif
 
+#include "restrict_process.h"
+
 #define VER_MAJ 0
 #define VER_MIN 9
 
@@ -131,9 +133,6 @@ int		 bin_file(FILE * f);
 int		 gzbin_file(gzFile * f);
 #endif
 int		 mmbin_file(mmf_t *f);
-
-int restrict_process_init();
-int restrict_process_stdin();
 
 #ifndef HAVE_STRTONUM
 long long strtonum(const char *numstr, long long minval, long long maxval,
