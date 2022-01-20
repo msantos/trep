@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2019, Michael Santos <michael.santos@gmail.com>
+/* Copyright (c) 2017-2022, Michael Santos <michael.santos@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -13,25 +13,21 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 #ifdef RESTRICT_PROCESS_rlimit
-#include <sys/time.h>
 #include <sys/resource.h>
+#include <sys/time.h>
 
-    int
-restrict_process_init()
-{
-    struct rlimit rl_zero = {0};
+int restrict_process_init() {
+  struct rlimit rl_zero = {0};
 
-    return setrlimit(RLIMIT_NPROC, &rl_zero);
+  return setrlimit(RLIMIT_NPROC, &rl_zero);
 }
 
-    int
-restrict_process_stdin()
-{
-    struct rlimit rl = {0};
+int restrict_process_stdin() {
+  struct rlimit rl = {0};
 
-    rl.rlim_cur = RESTRICT_PROCESS_RLIMIT_NOFILE;
-    rl.rlim_max = RESTRICT_PROCESS_RLIMIT_NOFILE;
+  rl.rlim_cur = RESTRICT_PROCESS_RLIMIT_NOFILE;
+  rl.rlim_max = RESTRICT_PROCESS_RLIMIT_NOFILE;
 
-    return setrlimit(RLIMIT_NOFILE, &rl);
+  return setrlimit(RLIMIT_NOFILE, &rl);
 }
 #endif
