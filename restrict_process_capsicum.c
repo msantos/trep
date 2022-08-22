@@ -13,14 +13,21 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 #ifdef RESTRICT_PROCESS_capsicum
-#include <sys/capability.h>
+#include <sys/capsicum.h>
 #include <sys/param.h>
 #include <sys/resource.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <unistd.h>
 
+#include <stdlib.h>
+#include <dirent.h>
+
 #include <errno.h>
+
+static int fdlimit(int lowfd, cap_rights_t *policy);
+static int isnum(const char *s);
+static int fdlimit_range(int lowfd, cap_rights_t *policy);
 
 int restrict_process_init() {
   struct rlimit rl = {0};
@@ -29,11 +36,8 @@ int restrict_process_init() {
 }
 
 int restrict_process_stdin() {
-  struct rlimit rl = {0};
   cap_rights_t policy_read;
   cap_rights_t policy_write;
-
-  int fd = -1;
 
   (void)cap_rights_init(&policy_read, CAP_READ, CAP_FCNTL);
   (void)cap_rights_init(&policy_write, CAP_WRITE);
@@ -47,17 +51,77 @@ int restrict_process_stdin() {
   if (cap_rights_limit(STDERR_FILENO, &policy_write) < 0)
     return -1;
 
+  if (fdlimit(STDERR_FILENO + 1, &policy_read) < 0)
+    return -1;
+
+  return cap_enter();
+}
+
+static int fdlimit(int lowfd, cap_rights_t *policy) {
+  DIR *dp;
+  int dfd;
+  struct dirent *de;
+  int fd;
+
+  /* The opendir() function sets the close-on-exec flag for the file
+   * descriptor underlying the DIR *. */
+  dp = opendir("/dev/fd");
+  if (dp == NULL) {
+    return fdlimit_range(lowfd, policy);
+  }
+
+  dfd = dirfd(dp);
+  if (dfd == -1) {
+    (void)closedir(dp);
+    return fdlimit_range(lowfd, policy);
+  }
+
+  while ((de = readdir(dp)) != NULL) {
+    if (!isnum(de->d_name))
+      continue;
+
+    fd = atoi(de->d_name);
+
+    if (fd < lowfd || fd == dfd)
+      continue;
+
+    if (cap_rights_limit(fd, policy) < 0) {
+      int errnum = errno;
+      (void)closedir(dp);
+      errno = errnum;
+      return -1;
+    }
+  }
+
+  return closedir(dp);
+}
+
+static int isnum(const char *s) {
+  const char *p;
+
+  for (p = s; *p != '\0'; p++) {
+    if (*p < '0' || *p > '9')
+      return 0;
+  }
+
+  return 1;
+}
+
+static int fdlimit_range(int lowfd, cap_rights_t *policy) {
+  struct rlimit rl = {0};
+  int fd;
+
   if (getrlimit(RLIMIT_NOFILE, &rl) < 0)
     return -1;
 
-  for (fd = STDERR_FILENO + 1; fd < rl.rlim_cur; fd++) {
-    if (fcntl(fd, F_GETFD, 0) < 0)
+  for (fd = rl.rlim_cur; fd >= lowfd; fd--) {
+    if (fcntl(fd, F_GETFD, 0) == -1)
       continue;
 
-    if (cap_rights_limit(fd, &policy_read) < 0)
+    if (cap_rights_limit(fd, policy) < 0)
       return -1;
   }
 
-  return cap_enter();
+  return 0;
 }
 #endif
