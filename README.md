@@ -1,5 +1,3 @@
-------------------------------------------------------------------------
-
 TREP(1) BSD General Commands Manual TREP(1)
 
 **NAME**
@@ -8,7 +6,7 @@ TREP(1) BSD General Commands Manual TREP(1)
 
 **SYNOPSIS**
 
-**trep** \[**−abcEFGHhIiLlnoqRsUVvwx**\] \[**−A ***num*\] \[**−B ***num*\] \[**−C**\[*num*\]\] \[**−e ***pattern*\] \[**−f ***file*\] \[**−-binary-files**=*value*\] \[**−-context**\[=*num*\]\] \[**--label=name**\] \[**−-line-buffered**\] \[**−-stream-with-match**=\[*stdout *| *stderr *| *null*\]\] \[**−-stream-without-match**=\[*stdout *| *stderr *| *null*\]\] \[*pattern*\] \[*file ...*\]
+**trep** \[**−abcEFGHhIiLlnoqRsUVvwx**\] \[**−A** *num*\] \[**−B** *num*\] \[**−C**\[*num*\]\] \[**−e** *pattern*\] \[**−f** *file*\] \[**−-binary-files**=*value*\] \[**−-context**\[=*num*\]\] \[**--label=name**\] \[**−-line-buffered**\] \[**−-stream-with-match**=\[*stdout* | *stderr* | *null*\]\] \[**−-stream-without-match**=\[*stdout* | *stderr* | *null*\]\] \[*pattern*\] \[*file ...*\]
 
 **DESCRIPTION**
 
@@ -213,5 +211,3 @@ Historic versions of the **grep** utility also supported the flags \[**−ruy**\
 The **grep** command first appeared in Version 4 AT&T UNIX.
 
 BSD March 08, 2017 BSD
-
-------------------------------------------------------------------------
