@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2022, Michael Santos <michael.santos@gmail.com>
+/* Copyright (c) 2017-2023, Michael Santos <michael.santos@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -14,10 +14,22 @@
  */
 #ifdef RESTRICT_PROCESS_rlimit
 #include <sys/resource.h>
+#include <sys/stat.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 int restrict_process_init() {
   struct rlimit rl_zero = {0};
+  struct stat sb = {0};
+
+  if (fstat(STDOUT_FILENO, &sb) < 0)
+    return -1;
+
+  if (!S_ISREG(sb.st_mode)) {
+    if (setrlimit(RLIMIT_FSIZE, &rl_zero) < 0)
+      return -1;
+  }
 
   return setrlimit(RLIMIT_NPROC, &rl_zero);
 }
