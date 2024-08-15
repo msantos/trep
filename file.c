@@ -29,7 +29,9 @@
 #include <err.h>
 #include <stdio.h>
 #include <stdlib.h>
+#ifndef NOZ
 #include <zlib.h>
+#endif
 
 #include "grep.h"
 
@@ -48,7 +50,9 @@ struct file {
 	int	 noseek;
 	FILE	*f;
 	mmf_t	*mmf;
+#ifndef NOZ
 	gzFile	*gzf;
+#endif
 };
 
 #ifndef NOZ
