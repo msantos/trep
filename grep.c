@@ -28,7 +28,11 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#ifdef HAVE_QUEUE
 #include <sys/queue.h>
+#else
+#include "queue.h"
+#endif
 
 #include <ctype.h>
 #include <err.h>
