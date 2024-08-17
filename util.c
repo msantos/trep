@@ -32,7 +32,11 @@
 #include <ctype.h>
 #include <err.h>
 #include <errno.h>
+#ifdef HAVE_FTS
 #include <fts.h>
+#else
+#include "fts.h"
+#endif
 #include <regex.h>
 #include <stdbool.h>
 #include <stdio.h>

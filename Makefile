@@ -4,7 +4,7 @@
 
 PROG=	trep
 SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
-		strtonum.c reallocarray.c fgetln.c \
+		strtonum.c reallocarray.c fgetln.c fts.c \
 		restrict_process_null.c \
 		restrict_process_pledge.c \
 		restrict_process_seccomp.c \
