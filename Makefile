@@ -14,6 +14,7 @@ SRCS=	binary.c file.c grep.c mmfile.c queue.c util.c \
 UNAME_SYS := $(shell uname -s)
 ifeq ($(UNAME_SYS), Linux)
 	CFLAGS ?= -D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
+						-DHAVE_QUEUE -DHAVE_FTS \
 						-Wformat -Werror=format-security \
 						-pie -fPIE \
 					 	-fno-strict-aliasing
@@ -21,6 +22,7 @@ ifeq ($(UNAME_SYS), Linux)
 	RESTRICT_PROCESS ?= seccomp
 else ifeq ($(UNAME_SYS), OpenBSD)
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
+						-DHAVE_QUEUE -DHAVE_FTS \
 						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
 						-Wformat -Werror=format-security \
 						-pie -fPIE \
@@ -29,6 +31,7 @@ else ifeq ($(UNAME_SYS), OpenBSD)
 	RESTRICT_PROCESS ?= pledge
 else ifeq ($(UNAME_SYS), FreeBSD)
 	CFLAGS ?= -DHAVE_STRTONUM -DHAVE_REALLOCARRAY -DHAVE_FGETLN \
+						-DHAVE_QUEUE -DHAVE_FTS \
 						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
 						-Wformat -Werror=format-security \
 						-pie -fPIE \
@@ -37,6 +40,7 @@ else ifeq ($(UNAME_SYS), FreeBSD)
 	RESTRICT_PROCESS ?= capsicum
 else ifeq ($(UNAME_SYS), Darwin)
 	CFLAGS ?= -DHAVE_FGETLN \
+						-DHAVE_QUEUE -DHAVE_FTS \
 						-D_FORTIFY_SOURCE=2 -O2 -fstack-protector-strong \
 						-Wformat -Werror=format-security \
 						-pie -fPIE \
