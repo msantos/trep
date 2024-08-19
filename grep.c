@@ -46,6 +46,10 @@
 
 #include "grep.h"
 
+#ifndef REG_STARTEND
+#define REG_STARTEND (1 << 2)
+#endif
+
 /* Flags passed to regcomp() and regexec() */
 int	 cflags;
 int	 eflags = REG_STARTEND;
