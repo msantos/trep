@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+export MUSL_INCLUDE="${MUSL_INCLUDE-/usr/local/lib}"
+
+MACHTYPE="$(uname -m)"
+case "${MACHTYPE}" in
+  armv6l) ;&
+  armv7l) MACHTYPE=arm ;;
+  *) ;;
+esac
+
+export CC="musl-gcc -static -Os"
+export TREP_LDFLAGS="-I$MUSL_INCLUDE/kernel-headers/generic/include -I$MUSL_INCLUDE/kernel-headers/${MACHTYPE}/include"
+export TREP_CFLAGS="-no-pie -UHAVE_FTS -UHAVE_QUEUE ${TREP_CFLAGS-}"
+exec make $@
