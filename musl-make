@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Statically link against libmusl on Linux:
+#
+#    export MUSL_INCLUDE=/tmp
+#    git clone https://github.com/sabotage-linux/kernel-headers.git $MUSL_INCLUDE/kernel-headers
+#    RESTRICT_PROCESS=seccomp ./musl-make clean all
+#
 set -o errexit
 set -o nounset
 set -o pipefail
