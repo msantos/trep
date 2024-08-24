@@ -60,9 +60,12 @@ export -f stdin1
 }
 
 @test "stream: match=stdout nomatch=stderr" {
-    run bash -c "stdin1 | trep --stream-with-match=stdout --stream-without-match=stderr test"
-    [ "${lines[0]}" == "123" ]
-    [ "${lines[1]}" == "test" ]
+    BATS_TEST_TMPDIR="${BATS_TEST_TMPDIR-$(mktemp -d)}"
+    stdin1 | trep --stream-with-match=stdout --stream-without-match=stderr test > "$BATS_TEST_TMPDIR/stdout" 2> "$BATS_TEST_TMPDIR/stderr"
+    run cat "$BATS_TEST_TMPDIR/stdout"
+    [ "$output" == "test" ]
+    run cat "$BATS_TEST_TMPDIR/stderr"
+    [ "$output" == "123" ]
 }
 
 @test "stream: match=stderr nomatch=stdout" {
