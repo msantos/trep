@@ -11,19 +11,19 @@ export -f stdin1
 
 @test "stream: stdout" {
     run bash -c "stdin1 | trep --stream-with-match=stdout --stream-without-match=null test > /dev/null"
-    echo $output
+    echo "$output"
     [ -z "$output" ]
 }
 
 @test "stream: stderr" {
     run bash -c "stdin1 | trep --stream-with-match=stderr --stream-without-match=null test 2> /dev/null"
-    echo $output
+    echo "$output"
     [ -z "$output" ]
 }
 
 @test "stream: match=null nomatch=null" {
     run bash -c "stdin1 | trep --stream-with-match=null --stream-without-match=null test"
-    echo $output
+    echo "$output"
     [ -z "$output" ]
 }
 
