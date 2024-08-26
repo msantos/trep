@@ -69,13 +69,19 @@ export -f stdin1
 }
 
 @test "stream: match=stderr nomatch=stdout" {
-    run bash -c "stdin1 | trep --stream-with-match=stderr --stream-without-match=stdout test"
-    [ "${lines[0]}" == "test" ]
-    [ "${lines[1]}" == "123" ]
+    BATS_TEST_TMPDIR="${BATS_TEST_TMPDIR-$(mktemp -d)}"
+    stdin1 | trep --stream-with-match=stderr --stream-without-match=stdout test > "$BATS_TEST_TMPDIR/stdout" 2> "$BATS_TEST_TMPDIR/stderr"
+    run cat "$BATS_TEST_TMPDIR/stdout"
+    [ "$output" == "123" ]
+    run cat "$BATS_TEST_TMPDIR/stderr"
+    [ "$output" == "test" ]
 }
 
 @test "stream: prepend label: match=stderr nomatch=stdout" {
-    run bash -c "stdin1 | trep --label=foo -H --stream-with-match=stderr --stream-without-match=stdout test"
-    [ "${lines[0]}" == "foo:test" ]
-    [ "${lines[1]}" == "foo:123" ]
+    BATS_TEST_TMPDIR="${BATS_TEST_TMPDIR-$(mktemp -d)}"
+    stdin1 | trep --label=foo -H --stream-with-match=stderr --stream-without-match=stdout test > "$BATS_TEST_TMPDIR/stdout" 2> "$BATS_TEST_TMPDIR/stderr"
+    run cat "$BATS_TEST_TMPDIR/stdout"
+    [ "$output" == "foo:123" ]
+    run cat "$BATS_TEST_TMPDIR/stderr"
+    [ "$output" == "foo:test" ]
 }
