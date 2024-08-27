@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 @test "sandbox: read file" {
-    cat /etc/hosts | trep --stream-with-match=null --stream-without-match=null --file=/etc/hosts
+    trep --stream-with-match=null --stream-without-match=null --file=/etc/hosts </etc/hosts
 }
 
 @test "sandbox: large input" {
