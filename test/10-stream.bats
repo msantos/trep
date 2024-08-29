@@ -60,6 +60,7 @@ export -f stdin1
 }
 
 @test "stream: match=stdout nomatch=stderr" {
+  # shellcheck disable=SC2030
   BATS_TEST_TMPDIR="${BATS_TEST_TMPDIR-$(mktemp -d)}"
   stdin1 | trep --stream-with-match=stdout --stream-without-match=stderr test >"$BATS_TEST_TMPDIR/stdout" 2>"$BATS_TEST_TMPDIR/stderr"
   run cat "$BATS_TEST_TMPDIR/stdout"
@@ -69,6 +70,7 @@ export -f stdin1
 }
 
 @test "stream: match=stderr nomatch=stdout" {
+  # shellcheck disable=SC2030,SC2031
   BATS_TEST_TMPDIR="${BATS_TEST_TMPDIR-$(mktemp -d)}"
   stdin1 | trep --stream-with-match=stderr --stream-without-match=stdout test >"$BATS_TEST_TMPDIR/stdout" 2>"$BATS_TEST_TMPDIR/stderr"
   run cat "$BATS_TEST_TMPDIR/stdout"
@@ -78,6 +80,7 @@ export -f stdin1
 }
 
 @test "stream: prepend label: match=stderr nomatch=stdout" {
+  # shellcheck disable=SC2030,SC2031
   BATS_TEST_TMPDIR="${BATS_TEST_TMPDIR-$(mktemp -d)}"
   stdin1 | trep --label=foo -H --stream-with-match=stderr --stream-without-match=stdout test >"$BATS_TEST_TMPDIR/stdout" 2>"$BATS_TEST_TMPDIR/stderr"
   run cat "$BATS_TEST_TMPDIR/stdout"
