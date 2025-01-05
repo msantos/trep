@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2023, Michael Santos <michael.santos@gmail.com>
+/* Copyright (c) 2017-2025, Michael Santos <michael.santos@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -23,7 +23,7 @@
 
 #include <errno.h>
 
-int restrict_process_init() {
+int restrict_process_init(void) {
   struct rlimit rl = {0};
   struct stat sb = {0};
 
@@ -38,7 +38,7 @@ int restrict_process_init() {
   return setrlimit(RLIMIT_NPROC, &rl);
 }
 
-int restrict_process_stdin() {
+int restrict_process_stdin(void) {
   cap_rights_t policy_read;
   cap_rights_t policy_write;
 
