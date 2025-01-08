@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2023, Michael Santos <michael.santos@gmail.com>
+/* Copyright (c) 2017-2025, Michael Santos <michael.santos@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -19,7 +19,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-int restrict_process_init() {
+int restrict_process_init(void) {
   struct rlimit rl_zero = {0};
   struct stat sb = {0};
 
@@ -34,7 +34,7 @@ int restrict_process_init() {
   return setrlimit(RLIMIT_NPROC, &rl_zero);
 }
 
-int restrict_process_stdin() {
+int restrict_process_stdin(void) {
   struct rlimit rl = {0};
 
   rl.rlim_cur = RESTRICT_PROCESS_RLIMIT_NOFILE;
