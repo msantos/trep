@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2022, Michael Santos <michael.santos@gmail.com>
+/* Copyright (c) 2017-2025, Michael Santos <michael.santos@gmail.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -71,7 +71,7 @@
 #define SECCOMP_AUDIT_ARCH 0
 #endif
 
-int restrict_process_init() {
+int restrict_process_init(void) {
   struct sock_filter filter[] = {
       /* Ensure the syscall arch convention is as expected. */
       BPF_STMT(BPF_LD + BPF_W + BPF_ABS, offsetof(struct seccomp_data, arch)),
@@ -396,7 +396,7 @@ int restrict_process_init() {
   return 0;
 }
 
-int restrict_process_stdin() {
+int restrict_process_stdin(void) {
   struct sock_filter filter[] = {
       /* Ensure the syscall arch convention is as expected. */
       BPF_STMT(BPF_LD + BPF_W + BPF_ABS, offsetof(struct seccomp_data, arch)),
